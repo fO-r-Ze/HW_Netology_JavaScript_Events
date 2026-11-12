@@ -1,0 +1,120 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #2c3e50;
+  font-family: Arial, sans-serif;
+}
+
+#app {
+  text-align: center;
+  color: #ecf0f1;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#game-container {
+  display: inline-block;
+  background: #34495e;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  position: relative;
+  cursor: url('../img/hammer.svg') 16 16, crosshair;
+}
+
+/* Общий вид счётчиков — как в прошлом проекте */
+.scoreboard__item {
+  position: absolute;
+  top: 0;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 10;
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.scoreboard__item--score {
+  left: -130px;
+}
+
+.scoreboard__item--misses {
+  right: -190px;
+}
+
+/* Кнопка «Играть снова» — под полем, по центру, в стиле счёта */
+.restart-button {
+  position: absolute;
+  bottom: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #5e5959;
+  color: #ecf0f1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  display: none;
+  z-index: 10;
+}
+
+.restart-button:hover {
+  background-color: #1a252f;
+}
+
+/* Поле и ячейки — без изменений */
+.game-field {
+  display: grid;
+  width: 400px;
+  height: 400px;
+  gap: 8px;
+  background: #2c3e50;
+}
+
+.cell {
+  background: #ecf0f1;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s;
+  cursor: url('../img/hammer.svg') 16 16, crosshair;
+}
+
+.cell:hover {
+  background: #bdc3c7;
+}
+
+/* Молоток «бьёт» — при mousedown на поле */
+.game.is-hitting .cell,
+.game.is-hitting {
+  cursor: url('../img/hammer-hit.svg') 16 16, crosshair;
+}
+
+.goblin {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}

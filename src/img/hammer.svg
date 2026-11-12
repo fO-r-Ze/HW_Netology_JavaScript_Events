@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <g transform="rotate(-20 32 16)">
+    <!-- рукоятка -->
+    <rect x="26" y="24" width="12" height="36" rx="2" fill="#8B5A2B"/>
+    <rect x="26" y="24" width="4" height="36" rx="2" fill="#A07040"/>
+    <!-- головка (металл) -->
+    <rect x="8" y="8" width="48" height="16" rx="3" fill="#5C6B7A"/>
+    <rect x="8" y="8" width="48" height="5" rx="3" fill="#7A8A99"/>
+    <rect x="8" y="8" width="48" height="16" rx="3" fill="none" stroke="#3A4754" stroke-width="1.2"/>
+    <!-- насечки -->
+    <line x1="14" y1="14" x2="50" y2="14" stroke="#4A5768" stroke-width="1"/>
+    <line x1="14" y1="19" x2="50" y2="19" stroke="#4A5768" stroke-width="1"/>
+  </g>
+</svg>
