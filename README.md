@@ -1,6 +1,3 @@
-![Deploy](https://github.com/fO-r-Ze/HW_Netology_JavaScript_Events/actions/workflows/deploy-goblin.yml/badge.svg)
-[GitHub Pages](https://fO-r-Ze.github.io/HW_Netology_JavaScript_Events/)
-
 # Домашнее задание к занятию "3.Обработка событий"
 
 Правила сдачи задания:
@@ -100,3 +97,7 @@
 Всё должно собираться через Webpack (включая картинки и стили) и выкладываться на Github Pages через CI.
 
 **В качестве результата пришлите ссылку на ваш GitHub-проект. Не забудьте установить бейджик сборки.**
+
+
+![Deploy](https://github.com/fO-r-Ze/HW_Netology_JavaScript_Events/actions/workflows/deploy-goblin.yml/badge.svg)
+[GitHub Pages](https://fO-r-Ze.github.io/HW_Netology_JavaScript_Events/)
