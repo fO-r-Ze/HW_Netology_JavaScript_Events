@@ -99,5 +99,5 @@
 **В качестве результата пришлите ссылку на ваш GitHub-проект. Не забудьте установить бейджик сборки.**
 
 
-![Deploy](https://github.com/fO-r-Ze/HW_Netology_JavaScript_Events/actions/workflows/deploy-goblin.yml/badge.svg)
+![Deploy](https://github.com/fO-r-Ze/HW_Netology_JavaScript_Events/actions/workflows/deploy.yml/badge.svg)
 [GitHub Pages](https://fO-r-Ze.github.io/HW_Netology_JavaScript_Events/)
