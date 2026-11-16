@@ -4,7 +4,7 @@ import Game from '../Game.js';
 // Мокаем импорт картинки (jest уже настроен через moduleNameMapper)
 jest.mock('../img/goblin.png', () => 'mocked-image-path');
 
-describe('Game (гоблины)', () => {  
+describe('Game (гоблины)', () => {
   let container;
   let game;
   let title;
@@ -27,9 +27,10 @@ describe('Game (гоблины)', () => {
 
   afterEach(() => {
     game.destroy();
-    document.body.removeChild(container);
-    if (title && title.parentNode) title.parentNode.removeChild(title);
+    container.remove();
+    if (title) title.remove();
     jest.clearAllTimers();
+    jest.restoreAllMocks();
     jest.useRealTimers();
   });
 
@@ -48,7 +49,6 @@ describe('Game (гоблины)', () => {
     const addEventListenerSpy = jest.spyOn(container, 'addEventListener');
     game.init();
     expect(addEventListenerSpy).toHaveBeenCalledWith('click', game.handleClick);
-    addEventListenerSpy.mockRestore();
   });
 
   test('клик по гоблину увеличивает счёт и скрывает гоблина', () => {
@@ -58,7 +58,6 @@ describe('Game (гоблины)', () => {
 
     expect(game.scoreboard.score).toBe(1);
     expect(game.scoreboard.scoreElement.textContent).toBe('Счёт: 1');
-    // Гоблин скрыт сразу после клика
     expect(game.goblin.element.parentNode).toBeNull();
   });
 
@@ -82,8 +81,8 @@ describe('Game (гоблины)', () => {
   test('после 5 пропусков игра завершается и показывается кнопка «Играть снова»', () => {
     game.init();
     for (let i = 0; i < 5; i++) {
-      jest.advanceTimersByTime(1000); // гоблин исчезает (пропуск)
-      jest.advanceTimersByTime(500);  // пауза перед следующим раундом
+      jest.advanceTimersByTime(1000);
+      jest.advanceTimersByTime(500);
     }
     expect(game.scoreboard.misses).toBe(5);
     expect(game.gameOver).toBe(true);
@@ -92,32 +91,47 @@ describe('Game (гоблины)', () => {
   });
 
   test('кнопка «Играть снова» перезапускает игру и сбрасывает счёт', () => {
-  game.init();
-  // 5 пропусков → game over
-  for (let i = 0; i < 5; i++) {
-    jest.advanceTimersByTime(1000);
-    jest.advanceTimersByTime(500);
-  }
-  expect(game.gameOver).toBe(true);
+    game.init();
+    for (let i = 0; i < 5; i++) {
+      jest.advanceTimersByTime(1000);
+      jest.advanceTimersByTime(500);
+    }
+    expect(game.gameOver).toBe(true);
 
-  game.restartButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    game.restartButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
-  expect(game.gameOver).toBe(false);
-  expect(game.scoreboard.score).toBe(0);
-  expect(game.scoreboard.misses).toBe(0);
-  expect(game.restartButton.style.display).not.toBe('inline-block');
-});
+    expect(game.gameOver).toBe(false);
+    expect(game.scoreboard.score).toBe(0);
+    expect(game.scoreboard.misses).toBe(0);
+    expect(game.restartButton.style.display).not.toBe('inline-block');
+  });
 
   test('клик по гоблину сбрасывает таймер пропуска', () => {
     game.init();
     const cell = game.goblin.element.closest('.cell');
     cell.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
-    // Прошло больше секунды — но пропуска быть не должно,
-    // потому что таймер был сброшен кликом
     jest.advanceTimersByTime(1000);
     expect(game.scoreboard.misses).toBe(0);
     expect(game.scoreboard.score).toBe(1);
+  });
+
+  // гоблин не появляется в одной и той же ячейке дважды подряд
+  test('гоблин не появляется в одной и той же ячейке два раза подряд', () => {
+    // Принудительно Math.random() = 0, чтобы выбор был детерминированным
+    jest.spyOn(Math, 'random').mockReturnValue(0);
+
+    game.init();
+    // 1-й раунд: exclude = null → берём cells[0]
+    expect(game.goblin.currentCell).toBe(game.field.cells[0]);
+
+    // Пропуск → новый раунд
+    jest.advanceTimersByTime(1000);
+    jest.advanceTimersByTime(500);
+
+    // 2-й раунд: exclude = cells[0] → берём cells[1], не cells[0]
+    expect(game.goblin.currentCell).not.toBe(game.field.cells[0]);
+    expect(game.goblin.currentCell).toBe(game.field.cells[1]);
   });
 
   test('stop останавливает таймеры и снимает обработчик', () => {
@@ -129,8 +143,6 @@ describe('Game (гоблины)', () => {
     expect(game.showTimeoutId).toBeNull();
     expect(game.nextRoundTimeoutId).toBeNull();
     expect(game.gameOver).toBe(true);
-
-    removeEventListenerSpy.mockRestore();
   });
 
   test('destroy очищает контейнер и сбрасывает ссылки на компоненты', () => {

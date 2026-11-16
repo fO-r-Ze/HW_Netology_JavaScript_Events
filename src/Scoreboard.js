@@ -13,13 +13,13 @@ export default class Scoreboard {
     this.scoreElement = document.createElement('div');
     this.scoreElement.id = 'score-display';
     this.scoreElement.className = 'scoreboard__item scoreboard__item--score';
-    this.container.appendChild(this.scoreElement);
+    this.container.append(this.scoreElement); // было appendChild
 
-    // Пропуски — справа от поля (просто число)
+    // Пропуски — справа от поля
     this.missesElement = document.createElement('div');
     this.missesElement.id = 'misses-display';
     this.missesElement.className = 'scoreboard__item scoreboard__item--misses';
-    this.container.appendChild(this.missesElement);
+    this.container.append(this.missesElement); // было appendChild
 
     this.update();
   }

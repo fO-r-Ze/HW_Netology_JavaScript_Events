@@ -17,11 +17,11 @@ export default class Field {
       const cell = document.createElement('div');
       cell.className = 'cell';
       cell.dataset.index = i;
-      this.fieldElement.appendChild(cell);
+      this.fieldElement.append(cell); // было appendChild
       this.cells.push(cell);
     }
 
-    this.container.appendChild(this.fieldElement);
+    this.container.append(this.fieldElement); // было appendChild
   }
 
   getRandomCell(excludeCell = null) {

@@ -17,8 +17,8 @@ export default class Goblin {
 
   show(cell) {
     if (!this.element) this.create();
-    // appendChild автоматически перемещает узел из старого родителя
-    cell.appendChild(this.element);
+    // append автоматически перемещает узел из старого родителя
+    cell.append(this.element); // было appendChild
     this.currentCell = cell;
   }
 

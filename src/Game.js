@@ -21,6 +21,10 @@ export default class Game {
     this.nextRoundTimeoutId = null;
     this.gameOver = false;
 
+    // Храним ячейку, где гоблин был в прошлом раунде,
+    // чтобы исключить её при следующем выборе.
+    this.lastGoblinCell = null;
+
     this.handleClick = this.handleClick.bind(this);
     this.handleRestart = this.handleRestart.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -33,6 +37,8 @@ export default class Game {
     this.container.style.position = 'relative';
 
     this.setTitle(this.defaultTitle);
+
+    this.lastGoblinCell = null;
 
     this.field = new Field(this.container, this.size);
     this.field.create();
@@ -76,7 +82,7 @@ export default class Game {
     btn.className = 'restart-button';
     btn.textContent = 'Играть снова';
     btn.addEventListener('click', this.handleRestart);
-    this.container.appendChild(btn);
+    this.container.append(btn); // было appendChild
     this.restartButton = btn;
   }
 
@@ -97,9 +103,10 @@ export default class Game {
 
     if (this.goblin) this.goblin.hide();
 
-    const exclude = this.goblin ? this.goblin.currentCell : null;
-    const cell = this.field.getRandomCell(exclude);
+    // Используем lastGoblinCell — он не обнуляется при hide()
+    const cell = this.field.getRandomCell(this.lastGoblinCell);
     this.goblin.show(cell);
+    this.lastGoblinCell = cell;
 
     this.showTimeoutId = setTimeout(() => {
       this.onGoblinMissed();
@@ -150,9 +157,7 @@ export default class Game {
     this.nextRoundTimeoutId = null;
     this.goblin.hide();
 
-    this.setTitle(
-      'Игра окончена!'
-    );
+    this.setTitle('Игра окончена!');
     this.showRestartButton();
   }
 
